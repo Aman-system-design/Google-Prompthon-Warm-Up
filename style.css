@@ -275,6 +275,18 @@ h1 {
   display: none !important;
 }
 
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
 /* Toast System */
 .toast {
   position: fixed;
@@ -443,6 +455,13 @@ textarea {
   color: var(--text-secondary);
   cursor: pointer;
   transition: all var(--transition-fast);
+  font-family: var(--font-body);
+}
+
+.suggestion-chip:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
 }
 
 .suggestion-chip:hover {
@@ -516,7 +535,20 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .energy-selector input[type="radio"] {
-  display: none;
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.energy-selector input[type="radio"]:focus + .energy-btn {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
 }
 
 .energy-btn {
@@ -567,7 +599,20 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .vibe-tags input[type="checkbox"] {
-  display: none;
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.vibe-tags input[type="checkbox"]:focus + .tag-chip {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
 }
 
 .tag-chip {
@@ -662,7 +707,20 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .engine-selector-grid input[type="radio"] {
-  display: none;
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.engine-selector-grid input[type="radio"]:focus + .engine-card {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
 }
 
 .engine-card {

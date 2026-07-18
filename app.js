@@ -2,6 +2,16 @@
    SOUSCHEF AI - APPLICATION LOGIC & ENGINE
    ========================================================================== */
 
+// --- Security Escaping Utility ---
+function escapeHtml(str) {
+  if (typeof str !== 'string') return str;
+  return str.replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+}
+
 // --- Global Application State ---
 const state = {
   theme: 'dark',
@@ -821,17 +831,17 @@ function renderMealCard(type, meal) {
       }
     }
 
-    ingredientsHTML += `<li>${ing.amount} ${displayName}</li>`;
+    ingredientsHTML += `<li>${escapeHtml(ing.amount)} ${escapeHtml(displayName)}</li>`;
   });
 
   // Assemble instructions, substituting keywords if swapped
   let stepsHTML = '';
   meal.instructions.forEach((step, idx) => {
-    let stepText = step;
+    let stepText = escapeHtml(step);
     // Replace original ingredient names with swapped names in text
     Object.keys(state.activeSwaps).forEach(original => {
-      const regex = new RegExp(original, 'gi');
-      stepText = stepText.replace(regex, `<strong>${state.activeSwaps[original]}</strong>`);
+      const regex = new RegExp(escapeHtml(original), 'gi');
+      stepText = stepText.replace(regex, `<strong>${escapeHtml(state.activeSwaps[original])}</strong>`);
     });
 
     stepsHTML += `
@@ -845,26 +855,26 @@ function renderMealCard(type, meal) {
   panel.innerHTML = `
     <div class="recipe-hero">
       <div class="recipe-placeholder-img">
-        <i data-lucide="${type === 'breakfast' ? 'coffee' : (type === 'lunch' ? 'sandwich' : 'soup')}"></i>
+        <i data-lucide="${escapeHtml(type) === 'breakfast' ? 'coffee' : (escapeHtml(type) === 'lunch' ? 'sandwich' : 'soup')}"></i>
       </div>
       <div class="recipe-intro">
-        <h4>${meal.name}</h4>
-        <p class="recipe-desc">${meal.description}</p>
+        <h4>${escapeHtml(meal.name)}</h4>
+        <p class="recipe-desc">${escapeHtml(meal.description)}</p>
       </div>
     </div>
 
     <div class="recipe-meta-grid">
       <div class="recipe-meta-box">
         <span>Active Cook</span>
-        <span>${meal.cookTime} mins</span>
+        <span>${parseInt(meal.cookTime) || 0} mins</span>
       </div>
       <div class="recipe-meta-box">
         <span>Difficulty</span>
-        <span>${meal.difficulty}</span>
+        <span>${escapeHtml(meal.difficulty)}</span>
       </div>
       <div class="recipe-meta-box">
         <span>Calories</span>
-        <span>${meal.calories} kcal</span>
+        <span>${parseInt(meal.calories) || 0} kcal</span>
       </div>
     </div>
 
@@ -928,11 +938,11 @@ function renderSubstitutions() {
     subItem.className = 'substitution-item';
     subItem.innerHTML = `
       <div class="sub-details">
-        <h4>${ing.name}</h4>
+        <h4>${escapeHtml(ing.name)}</h4>
         <p>Swap item to accommodate taste or save budget</p>
       </div>
       <div class="sub-select-wrapper">
-        <select id="${selectId}" class="sub-select">
+        <select id="${escapeHtml(selectId)}" class="sub-select">
           ${optionsHTML}
         </select>
       </div>
@@ -1099,8 +1109,8 @@ function renderCostSavings(scale) {
       card.className = 'cost-saving-card';
       card.innerHTML = `
         <div class="swap-text">
-          <h5>Swap ${swap.original}</h5>
-          <p>Use ${swap.alternative} instead</p>
+          <h5>Swap ${escapeHtml(swap.original)}</h5>
+          <p>Use ${escapeHtml(swap.alternative)} instead</p>
         </div>
         <span class="swap-benefit">-$${swap.saving.toFixed(2)}</span>
       `;
@@ -1138,7 +1148,7 @@ function renderGroceryList(ingredientsMap, scale) {
   Object.keys(categories).forEach(cat => {
     const deptTitle = document.createElement('div');
     deptTitle.className = 'grocery-dept-title';
-    deptTitle.textContent = cat;
+    deptTitle.textContent = escapeHtml(cat);
     sectionsContainer.appendChild(deptTitle);
 
     const ul = document.createElement('ul');
@@ -1149,12 +1159,13 @@ function renderGroceryList(ingredientsMap, scale) {
       const isChecked = state.groceryChecked[item.name] ? 'checked' : '';
       if (isChecked) checkedItems++;
 
+      const safeId = escapeHtml(item.name.replace(/\s+/g, '-'));
       const li = document.createElement('li');
       li.className = 'grocery-item';
       li.innerHTML = `
-        <label class="grocery-item-check" for="grocery-${item.name.replace(/\s+/g, '-')}">
-          <input type="checkbox" id="grocery-${item.name.replace(/\s+/g, '-')}" ${isChecked}>
-          <span class="grocery-item-name">${item.name}</span>
+        <label class="grocery-item-check" for="grocery-${safeId}">
+          <input type="checkbox" id="grocery-${safeId}" ${isChecked}>
+          <span class="grocery-item-name">${escapeHtml(item.name)}</span>
         </label>
         <span class="grocery-item-price">$${(item.price * scale).toFixed(2)}</span>
       `;
@@ -1248,7 +1259,7 @@ function renderTimeline() {
     // Header divider
     const divider = document.createElement('div');
     divider.className = 'timeline-section-divider';
-    divider.textContent = secName;
+    divider.textContent = escapeHtml(secName);
     container.appendChild(divider);
 
     secItems.forEach(item => {
@@ -1269,12 +1280,12 @@ function renderTimeline() {
         <div class="timeline-dot"></div>
         <div class="timeline-content-wrapper">
           <div class="timeline-task-header">
-            <span class="timeline-task-title">${item.text}</span>
+            <span class="timeline-task-title">${escapeHtml(item.text)}</span>
             <span class="timeline-task-meta">
-              <i data-lucide="clock"></i> ${timeText}
+              <i data-lucide="clock"></i> ${escapeHtml(timeText)}
             </span>
           </div>
-          <span class="timeline-task-desc">${item.mealName} Preparation</span>
+          <span class="timeline-task-desc">${escapeHtml(item.mealName)} Preparation</span>
         </div>
       `;
 

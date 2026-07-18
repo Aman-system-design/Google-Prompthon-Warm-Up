@@ -39,7 +39,7 @@
         </div>
       </div>
       <div class="header-actions">
-        <button id="theme-toggle" class="btn-icon" title="Toggle Theme">
+        <button id="theme-toggle" class="btn-icon" title="Toggle Theme" aria-label="Toggle light and dark theme">
           <i data-lucide="sun" class="sun-icon"></i>
           <i data-lucide="moon" class="moon-icon hidden"></i>
         </button>
@@ -70,9 +70,9 @@
               <label for="schedule-input">Describe your day / energy levels</label>
               <textarea id="schedule-input" placeholder="e.g., Working from home with meetings from 10-4. Gym at 5 PM. Want a quick lunch and a relaxing dinner, high in protein." required></textarea>
               <div class="textarea-suggestions">
-                <span class="suggestion-chip">Busy workday, low energy</span>
-                <span class="suggestion-chip">Post-workout meal prep</span>
-                <span class="suggestion-chip">Lazy weekend brunch & bake</span>
+                <button type="button" class="suggestion-chip">Busy workday, low energy</button>
+                <button type="button" class="suggestion-chip">Post-workout meal prep</button>
+                <button type="button" class="suggestion-chip">Lazy weekend brunch & bake</button>
               </div>
             </div>
 
@@ -210,7 +210,7 @@
                 <label for="api-key-input">Gemini API Key</label>
                 <div class="password-wrapper">
                   <input type="password" id="api-key-input" placeholder="AIzaSy...">
-                  <button type="button" id="toggle-key-visibility" class="btn-icon-inside"><i data-lucide="eye"></i></button>
+                  <button type="button" id="toggle-key-visibility" class="btn-icon-inside" aria-label="Toggle API key visibility"><i data-lucide="eye"></i></button>
                 </div>
                 <p class="help-text">Keys are stored securely in your local browser storage (`localStorage`) and never sent to any third party except Google's Gemini API endpoints.</p>
                 <a href="https://aistudio.google.com/" target="_blank" class="text-link">Get a free Gemini API key here <i data-lucide="external-link" style="width:12px; height:12px; display:inline-block;"></i></a>
